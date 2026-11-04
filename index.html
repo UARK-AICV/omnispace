@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="OmniSpace: Efficient Geometry Awareness for Autonomous Vehicles MLLMs. Camera-only spatial reasoning through camera pose injection, epipolar attention, and geometric distillation.">
+  <meta name="theme-color" content="#ffffff">
+  <title>OmniSpace | Academic Project</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#abstract">Skip to content</a>
+  <main>
+    <header class="hero">
+      <h1><span class="project-name">OmniSpace</span><span class="paper-title">Efficient Geometry Awareness for<br class="desktop-break"> Autonomous Vehicles MLLMs</span></h1>
+      <div class="authors" aria-label="Authors">
+        <span>Hao Vo<sup>1*</sup></span><span>Phu Loc Nguyen<sup>1*</sup></span><span>Khoa Vo<sup>1</sup></span><span>Sieu Tran<sup>1</sup></span><span>Duc Minh Nguyen<sup>1</sup></span><span>Ngo Xuan Cuong<sup>1</sup></span><span>Nghi D. Q. Bui<sup>2</sup></span><span>Anh Nguyen<sup>3</sup></span><span>Duy Minh Ho Nguyen<sup>4,5,6</sup></span><span>Ngan Le<sup>1</sup></span>
+      </div>
+      <div class="affiliations">
+        <span><sup>1</sup>University of Arkansas</span><span><sup>2</sup>Center for AI Research, VinUniversity</span><span><sup>3</sup>University of Liverpool</span><span><sup>4</sup>University of Stuttgart</span><span><sup>5</sup>DFKI</span><span><sup>6</sup>Max Planck Research School for Intelligent Systems</span>
+      </div>
+      <p class="equal-contribution">* Equal contribution</p>
+      <div class="resources" aria-label="Project resources">
+        <a class="button paper-button" href="https://arxiv.org/abs/2606.22617" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h6"/></svg>
+          Paper <span class="resource-format">arXiv</span>
+        </a>
+        <button class="button code-button" type="button" disabled aria-label="Code — coming soon">
+          <span class="code-label" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 4l-4 16"/></svg>Code</span>
+          <span class="coming-soon" aria-hidden="true">Code (Coming soon)</span>
+        </button>
+      </div>
+    </header>
+
+    <section id="abstract" class="text-section">
+      <h2>Abstract</h2>
+      <p>Multimodal Large Language Models (MLLMs) have achieved remarkable performance on 2D visual tasks, yet enhancing their spatial intelligence for real-world applications such as Autonomous Vehicles (AV) remains an open challenge. Existing geometry-aware MLLMs typically rely on auxiliary 3D models at inference time, introducing pipeline complexity and the risk of cascading failures. In this paper, we present <strong>OmniSpace</strong>, a backbone-agnostic framework for geometry-aware spatial reasoning from purely camera-only observations. Motivated by our finding that current MLLMs are bottlenecked by weak cross-view correspondence and depth estimation, OmniSpace introduces a Camera Pose Injector, a Multi-view Epipolar Attention module, and a 3D Geometric Distillation objective that jointly address these two limitations by transferring geometric knowledge into the model. Extensive experiments show that OmniSpace surpasses existing methods on planning benchmarks (nuScenes, Bench2Drive), risk detection (nuInstruct), language (OmniDrive), and generalization (DriveBench).</p>
+    </section>
+
+    <section id="method">
+      <div class="section-heading"><h2>Method</h2></div>
+      <figure class="architecture">
+        <a href="assets/architecture.png" target="_blank" rel="noopener" aria-label="View the OmniSpace architecture at full resolution">
+          <img src="assets/architecture.png" alt="OmniSpace architecture: multi-view images are encoded with camera-pose ray embeddings, refined by epipolar attention, and supervised by a 3D teacher during training. The teacher is removed for inference." width="1800" height="1253" loading="lazy">
+        </a>
+        <figcaption>The 3D teacher provides geometric supervision during training and is discarded at inference.</figcaption>
+      </figure>
+    </section>
+
+    <section id="experiments">
+      <h2>Experiments</h2>
+      <p class="table-caption" id="table-description">Open-loop planning results on nuScenes. Best results are <strong>bold</strong>; runners-up are <span class="runner-up">underlined</span>.</p>
+      <div class="table-scroll" role="region" aria-label="nuScenes experiment results; scroll horizontally to see all metrics" tabindex="0">
+        <table aria-label="Open-loop planning results on nuScenes" aria-describedby="table-description">
+          <thead>
+            <tr><th scope="col" rowspan="2">Method</th><th scope="col" rowspan="2">LLM</th><th scope="col" rowspan="2">Params</th><th scope="col" rowspan="2">FPS ↑</th><th scope="colgroup" colspan="4" class="metric-start">L2 ↓</th><th scope="colgroup" colspan="4" class="metric-start">Collision (%) ↓</th><th scope="colgroup" colspan="4" class="metric-start">Intersection (%) ↓</th></tr>
+            <tr><th scope="col" class="metric-start">1s</th><th scope="col">2s</th><th scope="col">3s</th><th scope="col">Avg.</th><th scope="col" class="metric-start">1s</th><th scope="col">2s</th><th scope="col">3s</th><th scope="col">Avg.</th><th scope="col" class="metric-start">1s</th><th scope="col">2s</th><th scope="col">3s</th><th scope="col">Avg.</th></tr>
+          </thead>
+          <tbody>
+            <tr class="group-row"><th colspan="16" scope="rowgroup">Traditional methods</th></tr>
+            <tr><th scope="row">UniAD</th><td>—</td><td>125M</td><td>1.8</td><td class="metric-start">0.20</td><td>0.42</td><td>0.75</td><td class="average">0.46</td><td class="metric-start">0.02</td><td>0.25</td><td>0.84</td><td class="average">0.37</td><td class="metric-start"><strong>0.20</strong></td><td>1.33</td><td>3.24</td><td class="average">1.59</td></tr>
+            <tr><th scope="row">VAD-Base</th><td>—</td><td>58M</td><td>4.5</td><td class="metric-start">0.17</td><td>0.34</td><td>0.60</td><td class="average">0.37</td><td class="metric-start">0.04</td><td>0.27</td><td>0.67</td><td class="average">0.33</td><td class="metric-start"><span class="runner-up">0.21</span></td><td>2.13</td><td>5.06</td><td class="average">2.47</td></tr>
+            <tr><th scope="row">BEV-Planner</th><td>—</td><td>—</td><td>—</td><td class="metric-start">0.16</td><td>0.32</td><td>0.57</td><td class="average">0.35</td><td class="metric-start"><strong>0.00</strong></td><td>0.29</td><td>0.73</td><td class="average">0.34</td><td class="metric-start">0.35</td><td>2.62</td><td>6.51</td><td class="average">3.16</td></tr>
+            <tr><th scope="row">ST-P3 </th><td>—</td><td>11M</td><td>—</td><td class="metric-start">1.59</td><td>2.64</td><td>3.73</td><td class="average">2.65</td><td class="metric-start">0.69</td><td>3.62</td><td>8.39</td><td class="average">4.23</td><td class="metric-start">2.53</td><td>8.17</td><td>14.40</td><td class="average">8.37</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="group-row"><th colspan="16" scope="rowgroup">2D MLLM</th></tr>
+            <tr><th scope="row">Baseline</th><td>Qwen2.5-VL 7B</td><td>7.75B</td><td>0.42</td><td class="metric-start">0.15</td><td>0.33</td><td>0.62</td><td class="average">0.37</td><td class="metric-start"><strong>0.00</strong></td><td>0.18</td><td>0.76</td><td class="average">0.31</td><td class="metric-start">0.94</td><td>3.09</td><td>6.76</td><td class="average">3.59</td></tr>
+            <tr><th scope="row">Baseline</th><td>InternVL3.5 4B</td><td>4.73B</td><td>0.47</td><td class="metric-start">0.15</td><td>0.33</td><td>0.62</td><td class="average">0.37</td><td class="metric-start"><strong>0.00</strong></td><td>0.18</td><td>0.88</td><td class="average">0.35</td><td class="metric-start">0.78</td><td>3.03</td><td>6.95</td><td class="average">3.59</td></tr>
+            <tr><th scope="row">Baseline</th><td>Qwen3-VL 4B</td><td>4.4B</td><td>0.44</td><td class="metric-start">0.15</td><td>0.32</td><td>0.61</td><td class="average">0.36</td><td class="metric-start"><strong>0.00</strong></td><td>0.14</td><td>0.96</td><td class="average">0.36</td><td class="metric-start">0.57</td><td>2.54</td><td>6.04</td><td class="average">3.05</td></tr>
+            <tr><th scope="row">EMMA </th><td>—</td><td>—</td><td>—</td><td class="metric-start">0.14</td><td>0.29</td><td>0.54</td><td class="average">0.32</td><td class="metric-start">—</td><td>—</td><td>—</td><td class="average">—</td><td class="metric-start">—</td><td>—</td><td>—</td><td class="average">—</td></tr>
+            <tr><th scope="row">DriveVLM </th><td>Qwen-VL</td><td>9.6B</td><td>—</td><td class="metric-start">0.18</td><td>0.34</td><td>0.68</td><td class="average">0.40</td><td class="metric-start">0.10</td><td>0.22</td><td><span class="runner-up">0.45</span></td><td class="average">0.27</td><td class="metric-start">—</td><td>—</td><td>—</td><td class="average">—</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="group-row"><th colspan="16" scope="rowgroup">2D MLLM + test-time 3D model</th></tr>
+            <tr><th scope="row">ORION </th><td>Vicuna-7B-v1.5</td><td>7.55B</td><td>—</td><td class="metric-start">0.17</td><td>0.31</td><td>0.55</td><td class="average">0.34</td><td class="metric-start">0.05</td><td>0.25</td><td>0.80</td><td class="average">0.37</td><td class="metric-start">—</td><td>—</td><td>—</td><td class="average">—</td></tr>
+            <tr><th scope="row">OmniDrive</th><td>LLaVA-7B</td><td>7.2B</td><td>0.27</td><td class="metric-start">0.14</td><td>0.29</td><td>0.55</td><td class="average">0.33</td><td class="metric-start"><strong>0.00</strong></td><td><span class="runner-up">0.13</span></td><td>0.78</td><td class="average">0.30</td><td class="metric-start">0.56</td><td>2.48</td><td>5.96</td><td class="average">3.00</td></tr>
+            <tr><th scope="row">VGGDrive</th><td>Qwen2.5-VL 7B</td><td>8.5B</td><td>0.03</td><td class="metric-start">0.14</td><td>0.28</td><td>0.51</td><td class="average">0.31</td><td class="metric-start">0.02</td><td><strong>0.10</strong></td><td>0.55</td><td class="average">0.22</td><td class="metric-start">0.63</td><td>2.27</td><td>4.02</td><td class="average">2.31</td></tr>
+            <tr><th scope="row">SpaceDrive </th><td>Qwen2.5-VL 7B</td><td>8.7B</td><td>0.25</td><td class="metric-start">0.15</td><td>0.29</td><td>0.51</td><td class="average">0.32</td><td class="metric-start">0.04</td><td>0.18</td><td>0.49</td><td class="average">0.23</td><td class="metric-start">0.22</td><td><strong>0.80</strong></td><td>2.79</td><td class="average"><span class="runner-up">1.27</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="group-row"><th colspan="16" scope="rowgroup">2D MLLM + train-time 3D model</th></tr>
+            <tr class="ours"><th scope="row"><strong>OmniSpace</strong></th><td>Qwen2.5-VL 7B</td><td>7.79B</td><td>0.40</td><td class="metric-start"><strong>0.12</strong></td><td><strong>0.25</strong></td><td><span class="runner-up">0.47</span></td><td class="average"><strong>0.28</strong></td><td class="metric-start"><strong>0.00</strong></td><td><strong>0.10</strong></td><td>0.57</td><td class="average">0.22</td><td class="metric-start">0.32</td><td>1.22</td><td><strong>2.22</strong></td><td class="average"><strong>1.25</strong></td></tr>
+            <tr class="ours"><th scope="row"><strong>OmniSpace</strong></th><td>InternVL3.5 4B</td><td>4.77B</td><td>0.46</td><td class="metric-start"><span class="runner-up">0.13</span></td><td><span class="runner-up">0.26</span></td><td>0.50</td><td class="average"><span class="runner-up">0.30</span></td><td class="metric-start"><span class="runner-up">0.01</span></td><td><strong>0.10</strong></td><td>0.50</td><td class="average"><span class="runner-up">0.20</span></td><td class="metric-start">0.31</td><td>1.88</td><td><span class="runner-up">2.32</span></td><td class="average">1.50</td></tr>
+            <tr class="ours"><th scope="row"><strong>OmniSpace</strong></th><td>Qwen3-VL 4B</td><td>4.44B</td><td>0.42</td><td class="metric-start"><strong>0.12</strong></td><td><span class="runner-up">0.26</span></td><td><strong>0.45</strong></td><td class="average"><strong>0.28</strong></td><td class="metric-start">0.02</td><td>0.14</td><td><strong>0.42</strong></td><td class="average"><strong>0.19</strong></td><td class="metric-start">0.25</td><td><span class="runner-up">1.20</span></td><td>2.36</td><td class="average"><span class="runner-up">1.27</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="acknowledgments" class="text-section">
+      <h2>Acknowledgments</h2>
+      <p>This material is based upon work supported by the National Science Foundation under Award No. #2443877 (NSF CAREER), #2223793 (NSF EFRI BRAID), #2445877 (NSF E-RISE), #R01CA277739-04 (NIH). We also acknowledge the Arkansas High-Performance Computing Center for providing GPUs. Duy Minh Ho Nguyen contributed to this research under support from the Lower Saxony Ministry of Science and Culture (MWK) in the zukunft.niedersachsen program, the Endowed Chair of AAI at the University of Oldenburg, and the Federal Ministry of Research, Technology and Space (BMFTR) under grant numbers 16IW24006 (NoIDLEChatGPT) and 16IW26002 (AMENABLE).</p>
+    </section>
+
+    <section id="bibtex">
+      <div class="citation-heading"><h2>BibTeX</h2><a href="assets/omnispace.bib" download>Download .bib</a></div>
+      <pre tabindex="0" aria-label="BibTeX citation"><code>@article{vo2026omnispace,
+  title={OmniSpace: Efficient Geometry Awareness for Autonomous Vehicles MLLMs},
+  author={Vo, Hao and Nguyen, Phu Loc and Vo, Khoa and Tran, Sieu and Nguyen, Duc Minh and Cuong, Ngo Xuan and Bui, Nghi DQ and Nguyen, Anh and Nguyen, Duy Minh Ho and Le, Ngan},
+  journal={arXiv preprint arXiv:2606.22617},
+  year={2026}
+}</code></pre>
+    </section>
+    <footer><span>OmniSpace</span><a href="https://arxiv.org/abs/2606.22617" target="_blank" rel="noopener">Read the paper <span aria-hidden="true">↗</span></a></footer>
+  </main>
+</body>
+</html>
